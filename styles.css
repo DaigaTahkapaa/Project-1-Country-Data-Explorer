@@ -176,5 +176,8 @@ button#only-fav:focus-visible {
 	border-color: transparent;
 }
 
-
+/* helper for empty-results message */
+.no-matches { 
+    color: var(--warning); 
+}
 

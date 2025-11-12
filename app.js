@@ -99,7 +99,7 @@ async function load() {
   //  - remove empty/falsy entries, then join with ", ",
   //  - if nothing remains, use 'N/A' as a clear fallback.
   // This handles: [], undefined, 'City', or ['A','B'] safely.
-  capital: ([].concat(c.capital || []).filter(Boolean).join(', ')) || 'N/A',
+      capital: ([].concat(c.capital || []).filter(Boolean).join(', ')) || 'N/A',
       population: c.population || 0
     }))
     // Sort the small array alphabetically so the UI looks nice.
@@ -109,13 +109,174 @@ async function load() {
     statusMessage.textContent = `Loaded ${all.length} countries`;
     
     // Now that data is ready, draw the page (this calls render() from other part 7. of the code).
-    //render();
+    render();
   } catch (e) {
     // 8) If anything goes wrong (no network, API error...), show an error.
     if (statusMessage) statusMessage.textContent = 'Failed to load countries. Please try again.';
     else console.error('Failed to load countries', e);
   }
 }
+
+// =====================================================================
+// === 6. FILTERING: Apply search, region, and favourites filters ===
+// has typed in the search box, the selected region, and the favourites
+// toggle. Each step below is explained in plain language.
+// =====================================================================
+// filtered(): core filtering logic
+function filtered(){
+  //    Read the current search text. .trim() removes extra spaces at the
+  //    start/end and .toLowerCase() makes the check case-insensitive.
+  const term = q.value.trim().toLowerCase(); 
+
+  //    Read the selected region from the dropdown. If it's an empty
+  //    string the user hasn't chosen a region.
+  const reg = region.value; 
+
+  //    Start from the full list `all` and keep only countries that match
+  //    both the search text and the region (if those filters are used).
+  //    The filter keeps an item when both conditions are true.
+  let list = all.filter(c =>
+    // If the search box is empty, it is treated as "match everything".
+    // Otherwise check whether the country's name contains the search term.
+    (!term || c.name.toLowerCase().includes(term)) && 
+    // If no region is selected, match everything; otherwise require an
+    // exact region match (e.g. 'Europe').
+    (!reg || c.region === reg)
+  ); 
+
+  //    If the "favourites only" toggle is on, remove any country that is
+  //    not in the favourites list.
+  if(showFavOnly){
+    // `fav` is an object like { 'FI': true, 'SE': true } for favourited codes.
+    // Using !!fav[c.code] converts whatever is stored into a simple
+    // true/false value:
+    //  - If fav[c.code] is true (or any truthy value) -> !! gives true
+    //  - If fav[c.code] is undefined / null / 0 -> !! gives false
+    // This is a short way to test "is this country favourited?".
+    list = list.filter(c => !!fav[c.code]); 
+  }
+
+  //  Return the final list of countries that passed all filters.
+  return list;
+}
+
+// =====================================================================
+// === 7. RENDERING: Update the DOM with current filtered data ===
+// Clears grid and rebuilds it from scratch - efficient for small datasets
+// =====================================================================
+// render(): main UI update function
+function render(){
+  // Get the current filtered list of countries
+  const list = filtered(); 
+  // Remove all existing cards
+  grid.innerHTML = ""; 
+  
+  // If no countries match filters, show message
+  if(list.length === 0){
+    const p = document.createElement("p");
+    p.textContent = "No matches found.";
+    p.classList.add('no-matches');;
+    grid.appendChild(p);
+    return;
+  }
+  
+  // For each country in filtered list, create and append a card
+  list.forEach(c => grid.appendChild(card(c))); 
+}
+
+// =====================================================================
+// === 8. CARD CREATION: Build a single country card element ===
+// Returns a complete <article> element ready to insert into DOM
+// =====================================================================
+// card(c): creates one country card using the country object 'c'
+function card(c){
+  // Main card container - semantic <article> for accessibility
+  const wrap = document.createElement("article");
+  wrap.className = "card";
+  wrap.setAttribute("aria-label", c.name); // Screen reader support
+
+  // Header: country name on gradient background
+  const head = document.createElement("div");
+  head.className = "card-head";
+  // innerHTML with template literal for bold name
+  head.innerHTML = `${c.name}`;
+  wrap.appendChild(head);
+
+  // Body: flag image and details (region, capital, population)
+  const body = document.createElement("div");
+  body.style.padding = "10px";
+  body.innerHTML = `
+    <!-- Flag image with alt text for accessibility -->
+    <img alt="Flag of ${c.name}" src="${flagUrl(c.code)}" width="160" height="120" style="display:block;border-radius:8px;margin-bottom:8px;" />
+    <!-- Country details in small text -->
+    <div class="meta">
+      Region: ${c.region}<br>
+      Capital: ${c.capital}<br>
+      <!--toLocaleString() adds commas to large numbers-->
+      Population: ${c.population.toLocaleString()}
+    </div>
+  `;
+  wrap.appendChild(body);
+
+  // Actions: favourite button and status badge
+  const actions = document.createElement("div");
+  actions.style.display = "flex";
+  actions.style.gap = "8px";
+  actions.style.alignItems = "center";
+  actions.style.padding = "0 10px 10px";
+
+  // Favourite toggle button
+  const btn = document.createElement("button");
+  btn.type = "button";
+  // Check if this country is currently favourited
+  const liked = !!fav[c.code]; 
+  btn.textContent = liked ? "Remove favourite" : "Add favourite";
+  btn.style.cssText = "background:#fff;border:1px solid #dbe7f0;color:#0b3b58;padding:6px 10px;border-radius:8px;cursor:pointer;";
+  
+  // Click handler: toggle favourite status
+  btn.addEventListener("click", () => {
+    // If already favourited, remove it
+    if(fav[c.code]) delete fav[c.code]; 
+    // Otherwise, mark as favourite
+    else fav[c.code] = true;
+    // Save to localStorage
+    saveFav(); 
+    // Re-render to update button and badge
+    render(); 
+  });
+
+  // Badge: visual indicator of favourite status
+  const tag = document.createElement("span");
+  tag.className = "badge";
+  tag.textContent = liked ? "Favourite" : "Country";
+
+  // Add button and badge to actions container
+  actions.appendChild(btn);
+  actions.appendChild(tag);
+  // Add actions to card
+  wrap.appendChild(actions);
+
+  // Return the complete card element
+  return wrap; 
+}
+
+// =====================================================================
+// === 9. EVENT LISTENERS: Enable real-time interactivity ===
+// These make the app respond instantly to user actions
+// =====================================================================
+// Live search: update results as user types
+q.addEventListener("input", render); 
+// Region filter: update when dropdown changes
+region.addEventListener("change", render); 
+// Favourites toggle: switch between all and favourites only
+onlyFav.addEventListener("click", () => { 
+  // Flip the boolean flag
+  showFavOnly = !showFavOnly; 
+  // Update button text
+  onlyFav.textContent = showFavOnly ? "All countries" : "Favourites only"; 
+  // Re-render with new filter
+  render(); 
+}); 
 
 // =====================================================================
 // === 10. INITIALIZATION: Start the application ===
