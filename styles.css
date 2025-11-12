@@ -169,5 +169,12 @@ select:focus {
 	outline-offset: 2px;
 }
 
+button#only-fav:hover,
+button#only-fav:focus-visible {
+	background: var(--brand-1);
+	color: var(--surface);
+	border-color: transparent;
+}
+
 
 
