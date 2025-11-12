@@ -166,22 +166,27 @@ main {
 /* Flag wrapper + image: keep original aspect ratio and avoid squishing */
 .flag-wrap{
 	width: 160px;
-	margin: 4px auto 4px;
-	border-radius: 8px;
 	overflow: hidden;
-    border: var(--ink);
-    border-width: 1px;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	/* keep a fixed visual area so meta text starts at the same height */
+	height: 140px;
+	display: flex;
+	align-items: center; /* vertically center flag inside the pad */
+	justify-content: center;
+    margin: 0 auto;
 }
 
 .flag-img{
 	display: block;
-	width: 100%;
-	height: auto; /* preserve aspect ratio */
+	max-width: 100%;
+	max-height: 100%; /* limit to wrapper area, preserves aspect ratio */
 	object-fit: contain; /* ensure full flag visible inside wrapper */
 	border-radius: 4px;
-
+    border-color: var(--muted);
+    border-style: solid;
+    border-width: 1px;
+    
 }
+
 
 /* Small helpers */
 button#only-fav:focus,
