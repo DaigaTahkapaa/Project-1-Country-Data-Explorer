@@ -198,8 +198,8 @@ function card(c){
   // Header: country name on gradient background
   const head = document.createElement("div");
   head.className = "card-head";
-  // innerHTML with template literal for bold name
-  head.innerHTML = `${c.name}`;
+  // show the country name in bold and allow CSS to control color
+  head.innerHTML = `<strong class="card-title">${c.name}</strong>`;
   wrap.appendChild(head);
 
   // Body: flag image and details (region, capital, population)
@@ -212,10 +212,10 @@ function card(c){
     </div>
     <!-- Country details in small text -->
     <div class="meta">
-      Region: ${c.region}<br>
-      Capital: ${c.capital}<br>
+      <strong>Region:</strong> ${c.region}<br>
+      <strong>Capital:</strong> ${c.capital}<br>
       <!--toLocaleString() adds commas to large numbers-->
-      Population: ${c.population.toLocaleString()}
+      <strong>Population:</strong> ${c.population.toLocaleString()}
     </div>
   `;
   wrap.appendChild(body);
