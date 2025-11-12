@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <!-- Declare character encoding so text displays correctly across browsers -->
+    <meta charset="utf-8" />
+    <!-- Ensure proper scaling on phones and small screens -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Browser tab title -->
+    <title>Country Data Explorer</title>
+    <!-- Load page styles from styles.css -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <!-- Header for title and tagline -->
+      <header>
+        <!-- Main title -->
+        <h1>Country Data Explorer</h1>
+
+        <!-- Tagline -->
+        <p>
+          Browse global country data, search by name, filter by region, and save
+          favourites locally.
+        </p>
+      </header>
+      <!-- Controls section -->
+      <section>
+        <!-- Search input -->
+        <input type="search" id="search" placeholder="Search countries" />
+
+        <!-- Region dropdown -->
+        <select id="region">
+          <option value="">All regions</option>
+          <option value="Africa">Africa</option>
+          <option value="Americas">Americas</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
+          <option value="Antarctic">Antarctic</option>
+        </select>
+
+        <!-- Favourites toggle -->
+        <label>
+          <input type="checkbox" id="favourites-only" />
+          Show favourites only
+        </label>
+      </section>
+      <!-- Status section -->
+      <section id="status"></section>
+
+      <!-- Grid container: Empty grid for JS to fill with cards. -->
+      <section id="grid"></section>
+    </main>
+    <!-- Load behaviour from app.js. Using `defer` ensures the script runs after the page is parsed -->
+    <script src="app.js" defer></script>
+  </body>
+</html>
