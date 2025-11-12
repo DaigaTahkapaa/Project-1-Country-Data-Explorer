@@ -161,6 +161,25 @@ main {
 .meta{padding:10px;color:var(--muted);font-size:.95rem} /* Small details text */
 .badge{display:inline-block;background:var(--badge-bg);color:#046f95;border-radius:999px;padding:4px 8px;margin-top:6px} /* Favourite badge */
 
+/* Flag wrapper + image: keep original aspect ratio and avoid squishing */
+.flag-wrap{
+	width: 160px;
+	margin: 8px auto 12px;
+	background: var(--surface);
+	padding: 6px;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.flag-img{
+	display: block;
+	width: 100%;
+	height: auto; /* preserve aspect ratio */
+	object-fit: contain; /* ensure full flag visible inside wrapper */
+	border-radius: 4px;
+}
+
 /* Small helpers */
 button#only-fav:focus,
 input:focus,

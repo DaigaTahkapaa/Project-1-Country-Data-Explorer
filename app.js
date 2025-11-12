@@ -206,8 +206,10 @@ function card(c){
   const body = document.createElement("div");
   body.style.padding = "10px";
   body.innerHTML = `
-    <!-- Flag image with alt text for accessibility -->
-    <img alt="Flag of ${c.name}" src="${flagUrl(c.code)}" width="160" height="120" style="display:block;border-radius:8px;margin-bottom:8px;" />
+    <!-- Flag image wrapped so it keeps its aspect ratio -->
+    <div class="flag-wrap">
+      <img class="flag-img" alt="Flag of ${c.name}" src="${flagUrl(c.code)}" />
+    </div>
     <!-- Country details in small text -->
     <div class="meta">
       Region: ${c.region}<br>
