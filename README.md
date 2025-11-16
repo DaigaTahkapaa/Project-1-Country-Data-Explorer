@@ -24,13 +24,13 @@ GitHub: https://github.com/DaigaTahkapaa/Project-1-Country-Data-Explorer
 
 ## Demo video
 
-Hosted: https://project-1-country-data-explorer.onrender.com/
+Hosted: [Project-1-Country-Data-Explorer-Video](https://laureauas-my.sharepoint.com/:v:/g/personal/dat00012_laurea_fi/IQBE7mm64JrUQJgcudb3R_sDAWzBqScWzjZe63B61HhemXY?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=t9oKKN)
 
 Timestamps:
 00:00 Intro 
-00:00 Project Overview
-00:00 Demo 
-00:00 Conclusion 
+00:59 Project Overview
+01:46 Demo 
+03:59 Conclusion 
 
 ## How to run locally
 
@@ -162,29 +162,24 @@ project-1-country-data-explorer/
 - Reflection: key learnings and next steps present. (1/1)
 - Delivery: link in README. (1/1)
 
-**Score:** 5 / 5 minus 15% for submitting late = 4.25
+**Score:** 5 / 5 minus 20 % for submitting late = 4
 
 **Total self-assessment:**  32 / 35
 
 ---
 
-## Reflection (220 words)
+## Reflection 
 
 Working on the Country Data Explorer helped practice several basic front-end skills. One important part was learning how to fetch data from an external source—restcountries.com—and make sure the app doesn’t break if the data isn’t perfect. For example, some countries don’t have a capital listed, or the capital is given as an array instead of a single word. Through this, I learned a useful term: defensive data handling—which basically means making sure the app still works even if the data is incomplete, missing, or formatted in unexpected ways.
-
-Reading through the provided code helped me understand how data flows through a web app. The app first fetches country data, then cleans it up, stores it, filters it based on user input, and finally shows the results on the page. Seeing this step-by-step flow—fetch → clean → store → filter → display—made it easier to follow how everything connects.
-
-The favourites feature uses localStorage to remember which countries were marked. I learned that keeping this saved data simple—just a list of country codes with true or false values—makes it easier to manage and avoids problems later if the app changes. 
-
-Accessibility and user experience were part of the project goals. Virtually all my previous learning I have been mostly focusing on functions/logic, and now I'm learning about semantic landmarks (using tags like <main>, <header>, <nav>) to help screen readers understand the page layout. I also saw how adding visible focus outlines makes keyboard navigation easier.
-One new thing I hadn’t used before was the `sr-only` class—it hides text visually but still makes it readable for screen readers. That felt like a step beyond just writing working code—it’s about making the app usable for more people.
-
+Reading through the provided code helped me understand how data flows through a web app. The app first fetches country data, then cleans it up, stores it, filters it based on user input, and finally shows the results on the page. 
+The favourites feature uses localStorage to remember which countries were marked. I learned that keeping this saved data simple—just a list of country codes with true values—makes it easier to manage and avoids problems later if the app changes. 
+Accessibility and user experience were part of the project goals. Virtually all my previous learning I have been mostly focusing on functions/logic, and now I'm learning more about accessibility. One new thing I hadn’t used before was the `sr-only` class—it hides text visually but still makes it readable for screen readers. That felt like a step beyond just writing working code—it’s about making the app usable for more people.
 If I had more time to keep improving the project, I’d make a few upgrades: 
 1. I’d replace the remaining innerHTML with safer ways to build the page using direct DOM methods—this helps avoid security issues like script injection (which should not be an issue for this project where all the country data is pre-loaded, and trusted API used)
 2.  I’d save the search and filter choices in sessionStorage, so they don’t reset when the page reloads. 
 3.  I’d find a way on how to make linting and CI work so that the code would be automatically checked for errors and deployed whenever I make changes.
+This has been a valuable learning experience, but also quite overwhelming at times. Thinking about layout, HTML structure, JavaScript logic, accessibility, security, and even continuous integration feels like a lot for one person to handle—especially as a beginner. 
+But hey, maybe with enough practice, it’ll all become second nature someday.
 
-This has been a valuable learning experience, but also quite overwhelming at times. Thinking about layout, HTML structure, JavaScript logic, accessibility, security, and even continuous integration feels like a lot for one person to handle—especially as a beginner. But hey, maybe with enough practice, it’ll all become second nature someday.
----
 
 
